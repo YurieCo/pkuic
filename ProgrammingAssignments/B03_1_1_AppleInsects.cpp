@@ -14,6 +14,9 @@ int main() {
     } else {
         left = n - ate - 1;
     }
-    cout << left;
+    if(left < 0){
+        left = 0;
+    }
+    cout << left << '\n';
     return 0;
 }
