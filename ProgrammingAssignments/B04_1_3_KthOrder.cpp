@@ -1,57 +1,38 @@
-#include <iostream>
+#include <iostream> 
+#include <cstdlib> 
+using namespace std; 
+ 
+void select(int *A, int u, int v, int k) 
+{ 
+    int s = rand()%(v-u+1)+u; 
+    int a = A[s]; 
+    A[s] = A[u]; 
+    A[u] = a; 
+    int i, j=u; 
+    for (i=u; i<=v; i++) 
+        if (A[i] > a) 
+        { 
+            int tmp = A[++j]; 
+            A[j] = A[i]; 
+            A[i] = tmp; 
+        } 
+    A[u] = A[j]; 
+    A[j] = a; 
+    if (j == k) return; 
+    else if (j < k) 
+        select(A, j+1, v, k); 
+    else 
+        select(A, u, j-1, k); 
+} 
+ 
+int main() 
+{ 
+    int n, k, i, j; 
+    cin >> n >> k; 
+    int A[n];
+    for (i=0; i<n; i++) 
+        cin >> A[i]; 
+    select(A, 0, n-1, k-1); 
 
-using namespace std;
-
-int partition(int *arr, int start, int end)
-{
-    int pivot, mid, i, temp;
-    pivot = arr[start];
-    mid = start;
-    for (i = start + 1; i <= end; i++) {
-        if (arr[i] < pivot) {
-            mid++;
-            temp = arr[i];
-            arr[mid] = temp;
-            arr[i] = temp;
-        }
-    }
-    temp = arr[mid];
-    arr[mid] = arr[start];
-    arr[start] = temp;
-    return mid;
-}
-
-int order_statistic(int *arr, int start, int end, int k)
-{
-    int i;
-    if (start < end) {
-        i = partition(arr, start, end);
-        if (k == i) {
-            return i;
-        } else if (k > i) {
-            order_statistic(arr, i + 1, end, k);
-        } else {
-            order_statistic(arr, start, i - 1, k);
-        }
-    }
-}
-
-int swap(int *a, int *b)
-{
-    int temp;
-    temp = *b;
-    *b = *a;
-    *a = temp;
-}
-
-int main() {
-    int i, n, k;
-    cin >> n;
-    cin >> k;
-    int arr[n];
-    for (i = 0; i < n; i++) {
-        cin >> arr[i];
-    }
-    i = order_statistic(arr, 0, n - 1, n - k);
-    cout << arr[i] << endl;
-}
+    cout << A[k - 1] << endl; 
+} 
